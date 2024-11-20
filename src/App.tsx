@@ -1,31 +1,16 @@
-import fileTreeData from "./folders.json";
-import PathItemComponent from "./PathItemComponent";
-
 import { Menu, Item, useContextMenu } from "react-contexify";
+
+import fileTreeData from "./network/requestFetchAllFiles.json";
+import PathItemComponent from "./PathItemComponent";
+import $fixMe from "./types/fixme";
+
 import "react-contexify/ReactContexify.css";
 import "./App.css";
-import $fixMe from "./types/fixme";
 
 function App() {
   const { show } = useContextMenu({
     id: "MENU_ID",
   });
-
-  const handleMenuItemClick = ({ id, event, props }) => {
-    switch (id) {
-      case "copy":
-        console.log(event, props);
-        break;
-      case "delete":
-        console.log(event, props);
-        break;
-      case "rename":
-        console.log(event, props);
-        break;
-      default:
-        return;
-    }
-  };
 
   return (
     <>
@@ -39,25 +24,31 @@ function App() {
         >
           <ul className="fileTree">
             <PathItemComponent
-              data={[fileTreeData]}
-              onItemContextMenu={(event: $fixMe) =>
+              data={[fileTreeData] as $fixMe}
+              onItemContextMenu={(event) =>
                 show({
                   event,
                   props: {
-                    key: "value",
+                    key: (event.target as HTMLElement).innerText,
                   },
                 })
               }
             />
           </ul>
           <Menu id={"MENU_ID"}>
-            <Item id="copy" onClick={handleMenuItemClick}>
+            <Item id="copy" onClick={({ id, props }) => console.log(id, props)}>
               Copy
             </Item>
-            <Item id="rename" onClick={handleMenuItemClick}>
+            <Item
+              id="rename"
+              onClick={({ id, props }) => console.log(id, props)}
+            >
               Rename
             </Item>
-            <Item id="delete" onClick={handleMenuItemClick}>
+            <Item
+              id="delete"
+              onClick={({ id, props }) => console.log(id, props)}
+            >
               Delete
             </Item>
           </Menu>
