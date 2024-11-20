@@ -1,0 +1,156 @@
+#root {
+  width: 100vw;
+  height: 100vh;
+}
+
+:root {
+  --bg-color: #fff;
+  --text-color: #444;
+  --border-color: #ccc;
+  --folder-color: linear-gradient(to bottom, #5dcffe, #5dcffe 20%, #02aef4 20%, #5dcffe 30%, #77d7fe 60%);
+  --file-color: #ddd;
+}
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 100%;
+  block-size: 100%;
+}
+
+body {
+  font-family: sans-serif;
+  line-height: 1.5;
+  min-block-size: 100%;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+
+/*------------
+	Start demo
+------------*/
+
+.pageContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 5vmin;
+}
+
+.fileTreeWrapper {
+  width: 500px;
+  height: 500px;
+  overflow-y: scroll;
+  border: 1px solid var(--border-color);
+  padding: 1rem;
+}
+
+.fileTree {
+  max-inline-size: -webkit-fill-available;
+  border-radius: .25rem;
+}
+
+li {
+  list-style: none;
+  margin-block: .5rem;
+}
+
+li ul {
+  margin-inline-start: 1rem;
+  font-size: .875rem;
+}
+
+details {
+  position: relative;
+  isolation: isolate;
+}
+
+/* folder vertical branch */
+details[open]::before {
+  content: "";
+  position: absolute;
+  top: 1rem;
+  left: .5rem;
+  z-index: -1;
+  width: 1px;
+  height: calc(100% - 1rem);
+  background-color: var(--border-color);
+}
+
+summary {
+  cursor: pointer;
+}
+
+details>summary::-webkit-details-marker {
+  display: none;
+}
+
+/* item icons */
+:is(summary, file) {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  max-inline-size: max-content;
+}
+
+:is(summary, file)::before {
+  content: "";
+  inline-size: 1rem;
+  aspect-ratio: 1;
+  margin-inline-end: .25rem;
+}
+
+summary::before {
+  clip-path: polygon(0 0, 29% 0, 45% 14%, 100% 14%, 100% 100%, 0 100%);
+  background: var(--folder-color);
+}
+
+file::before {
+  clip-path: polygon(10% 0, 10% 100%, 90% 100%, 90% 30%, 50% 0);
+  background-color: var(--file-color);
+}
+
+/* item horizontal branch */
+:is(summary, file):not(.top-level)::after {
+  content: "";
+  order: -1;
+  width: .5rem;
+  height: 1px;
+  background-color: var(--border-color);
+  margin-inline-start: -.5rem;
+}
+
+input[type="radio"] {
+  width: 0;
+  height: 0;
+  opacity: 0;
+  position: absolute;
+  margin: 0;
+}
+
+label {
+  display: block;
+  width: 100%;
+  font-size: 14px;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+label:hover {
+  color: #a4d3ff;
+}
+
+input[type="radio"]:checked+label {
+  color: #5298fc;
+}
